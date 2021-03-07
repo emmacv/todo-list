@@ -1,7 +1,10 @@
+import TodosContainer from './Components/Molecules/TodosContainer/index';
+import TodosCategories from './Components/Molecules/TodosCategories/index'
+
+
 import styled from 'styled-components';
 import React from 'react';
 import "./index.css";
-import TodosContainer from './Components/Molecules/TodosContainer/index'
 
 const App = () => {
   return (
@@ -24,8 +27,4 @@ const MainContainer = styled.div`
   display: flex;
 `;
 
-const TodosCategories = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 20%;
-  height: 100vh;
-`;
+
