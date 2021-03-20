@@ -2,12 +2,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nunito';
 }
 
-html {
+html, 
+body {
   background-image: linear-gradient(to bottom right, 
     rgb(25, 142, 205), 
     rgb(10, 225, 205));
   background-attachment: fixed;
-  height: 100%;
 }
