@@ -4,14 +4,20 @@ import styled from 'styled-components';
 import AddTodoForm from '../../Molecules/AddTodoForm/index'
 
 const TodoContainter = ({children, props}) => {
-  const {todosList, addTodo} = useContext(TodosContext);
+  const {todosList, addTodo, closeTodoForm} = useContext(TodosContext);
 
   return (
     <Container>
       {todosList.length || 
         <EmptyList> 
-          Nothing to show yet. 
-          <Button onClick={addTodo(<AddTodoForm />)}>
+          <NoTodosDiv>
+
+            Nothing to show yet.
+            <br/>
+            <br/>
+            Your new life plan is a click away.
+          </NoTodosDiv>
+          <Button onClick={() => addTodo(<AddTodoForm {...{closeTodoForm}}/>)}>
             Add new Todo
           </Button>
         </EmptyList>
@@ -24,12 +30,21 @@ const TodoContainter = ({children, props}) => {
 export default TodoContainter;
 
 const EmptyList = styled.div`
-  
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+`;
+
+const NoTodosDiv = styled.div`
+  position: relative;
+  left: -10px;
+  width: 10%;
 `;
 
 const Container = styled.div`
   position: relative;
-  padding: 40vh 30vw;
+  height: 95%;
   margin: 2vh 3vw 2vh 1vw;
   display: grid;
   border-radius: 10px;
@@ -37,7 +52,7 @@ const Container = styled.div`
 `;
 
 const Button = styled.div`
-  position: absolute;
+  position: relative;
   background: rgb(215, 100, 100);
   border-radius: 10px;
   height: auto;
