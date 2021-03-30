@@ -1,7 +1,7 @@
-import { TodosContext } from '../../Providers/TodosProviders';
+import { TodosContext } from 'Components/Providers/TodosProviders';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import AddTodoForm from '../../Molecules/AddTodoForm/index'
+import AddTodoForm from 'Components/Molecules/AddTodoForm/index'
 
 const TodoContainter = ({children, props}) => {
   const {todosList, addTodo, closeTodoForm} = useContext(TodosContext);

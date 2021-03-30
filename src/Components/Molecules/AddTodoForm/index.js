@@ -1,24 +1,23 @@
-import { TodosContext } from '../../Providers/TodosProviders';
+import { TodosContext } from 'Components/Providers/TodosProviders';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 
 const AddTodoForm = props => {
   const {closeTodoForm, todosList, setTodosList} = useContext(TodosContext);
-  const [todo, setTodo] = useState({
+  const [todo, setTodo] = useState(() => ({
     name: '', 
     cathegory: '', 
     startDate: '',
     dueDate: '',
     completed: false,
-  });
+  }));
 
   const stopProp = e =>{
     e.stopPropagation();
   };
 
   const resetForm = e => {
-    alert(todo.startDate);
     setTodo({
       name: '', 
       cathegory: '', 
@@ -32,10 +31,23 @@ const AddTodoForm = props => {
     setTodo({...todo, [e.target.name]: e.target.value})
   }
 
+  const AddTodo = e => {
+    for(let item in todo)
+      if(!todo[item])
+      {
+        alert('Debe llenar todos los campos');
+        
+        return;
+      }
+
+    setTodosList(...todosList, todo);
+    closeTodoForm();
+  };
+
   return(
     <CloseContainer>
       <NewTodoContainer onClick={stopProp}>
-        <h1 style={{alignSelf: 'center'}}> Add New Todo </h1>
+        <Heading> Add New Todo </Heading>
         <Form onSubmit={closeTodoForm} rows={Object.keys(todo).length}>
           <label> Nombre: </label>
           <input name='name' 
@@ -65,13 +77,15 @@ const AddTodoForm = props => {
             value={todo['completed']}
             onChange={setChange}
           />
-        
-            <Button onClick={closeTodoForm}>
+          <ButtonContainer>
+
+            <Button onClick={AddTodo}>
               Add todo
             </Button>
             <Button onClick={resetForm}>
               Reset
             </Button>
+          </ButtonContainer>
         </Form>
       </NewTodoContainer>
     </CloseContainer>
@@ -92,6 +106,17 @@ const CloseContainer = styled.div`
   height: 100%;
 `;
 
+const Heading = styled.h1`
+  align-self: center; 
+
+  &::after{
+    content: 'x';
+    position: relative;
+    left: 90%;
+    cursor: pointer; 
+  }
+`;
+
 const NewTodoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -104,22 +129,34 @@ const NewTodoContainer = styled.div`
 const Form = styled.form`
   position: relative;
   display: grid;
-  height: inherit;
-  grid-template-columns: 20% 20%;
-  grid-template-rows: repeat(${({rows}) => rows}, 25%);
+  height: 100%;
+  grid-template-columns: 20% 30% 30%;
+  grid-template-rows: repeat(${({rows}) => rows}, 15%);
   grid-column-gap: 20px;
   grid-row-gap: 10px;
   padding-top: 10%;
   padding-left: 10vw;
   font-size: 2.5vh;
 
-  & > input {
-    width: 150%;
+  input {
+    border-radius: 10%;
+    border-style: none;
+  }
+  input:focus{
+    outline: solid rgba(12, 15, 25, 0.7) 1px;
   }
 `;
 
+const ButtonContainer = styled.div`
+  & > div:first-child {
+    margin-bottom: 20px;
+  }
+  grid-row: 1 / 5;
+  grid-column: 3 / 3;
+`;
+
 const Button = styled.div`
-  position: absolute;
+  position: relative;
   top: 5vh;
   text-align: center;
   background: rgb(215, 100, 100);

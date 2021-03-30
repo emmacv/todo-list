@@ -1,7 +1,7 @@
-import ProfileImg from '../../../Resources/Profile/toa-heftiba-O3ymvT7Wf9U-unsplash.jpg';//!imported as string
+import ProfileImg from 'Resources/Profile/toa-heftiba-O3ymvT7Wf9U-unsplash.jpg';//!imported as string
 import styled from 'styled-components';
 import React, { useContext, useState } from 'react';
-import { TodosContext } from '../../Providers/TodosProviders';
+import { TodosContext } from 'Components/Providers/TodosProviders';
 
 const TodosCategories = ({children, props}) => {
   const {todosTypes, setTodosTypes} = useContext(TodosContext);
