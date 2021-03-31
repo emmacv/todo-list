@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import uuid from 'react-uuid';
 import React from 'react';
 
 const NavBar = (props) => {
@@ -8,7 +9,7 @@ const NavBar = (props) => {
   return (
     <Nav>
       <ul>
-        {links.map(item => <ListItem> {item} </ListItem>)}
+        {links.map(item => <ListItem key={uuid()}> {item} </ListItem>)}
       </ul>
     </Nav>
   );

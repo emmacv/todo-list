@@ -2,14 +2,15 @@ import { TodosContext } from 'Components/Providers/TodosProviders';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import AddTodoForm from 'Components/Molecules/AddTodoForm/index'
+import { default as Button } from 'Components/Atoms/PrimaryButton/index'
 
 const TodoContainter = ({children, props}) => {
   const {todosList, addTodo, closeTodoForm} = useContext(TodosContext);
 
   return (
     <Container>
-      {todosList.length || 
-        <EmptyList> 
+      {todosList.length === 0 ? 
+        (<EmptyList> 
           <NoTodosDiv>
 
             Nothing to show yet.
@@ -20,9 +21,12 @@ const TodoContainter = ({children, props}) => {
           <Button onClick={() => addTodo(<AddTodoForm {...{closeTodoForm}}/>)}>
             Add new Todo
           </Button>
-        </EmptyList>
-      }
+        </EmptyList>) : (
+          <MainTodoDiv>
 
+          </MainTodoDiv>
+        )
+      }
     </Container>
   );
 }
@@ -51,22 +55,6 @@ const Container = styled.div`
   grid-area: todos-cont;
 `;
 
-const Button = styled.div`
-  position: relative;
-  background: rgb(215, 100, 100);
-  border-radius: 10px;
-  height: auto;
-  padding: 10px 15px;
-  margin-right: 25px;
-  box-shadow: 0px 2px 4px 1px rgba(15, 15, 15, 0.8);
-  top: 2vh; /**remove later */
-  &:active {
-    box-shadow: inset 0 2px 4px 1px rgba(15, 15, 15, 0.8);
-    color: rgb(215, 214, 215, 0.8); 
-    text-shadow: 1px 1px rgba(15, 15, 15, 0.8);
-  }:hover {
-    transition: 0.2s;
-    cursor: pointer;
-    color: rgb(215, 214, 215, 0.8); 
-  }
-`;
+const MainTodoDiv = styled(NoTodosDiv)`
+  
+`; 

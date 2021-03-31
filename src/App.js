@@ -30,7 +30,7 @@ const MainContainer = styled.div`
   height: 100vh;
   display: grid;
   grid-template-columns: 25% 2.5fr;
-  grid-template-rows: 1fr 7fr;
+  grid-template-rows: 10% 7fr;
   grid-column-gap: 50px;
   grid-template-areas: 
     "navigation navigation"

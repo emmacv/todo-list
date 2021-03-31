@@ -1,7 +1,8 @@
 import { TodosContext } from 'Components/Providers/TodosProviders';
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
-
+import styled, { keyframes } from 'styled-components';
+import {default as Button} from 'Components/Atoms/PrimaryButton/index';
+import { default as Input } from 'Components/Atoms/Input/AddTodoTypeInput';
 
 const AddTodoForm = props => {
   const {closeTodoForm, todosList, setTodosList} = useContext(TodosContext);
@@ -50,33 +51,36 @@ const AddTodoForm = props => {
         <Heading> Add New Todo </Heading>
         <Form onSubmit={closeTodoForm} rows={Object.keys(todo).length}>
           <label> Nombre: </label>
-          <input name='name' 
+          <Input name='name' 
             value={todo['name']} 
             onChange={setChange}
           />
           <label> Categoría: </label>
-          <input name='cathegory' 
+          <Input name='cathegory' 
             value={todo['cathegory']}
             onChange={setChange}
           />
           <label> Fecha de inicio: </label>
-          <input input type='date'
+          <Input input type='date'
             name='startDate' 
             value={todo['startDate']}
             onChange={setChange}  
           />
           <label> Fecha de fin: </label>
-          <input type='date'
+          <Input type='date'
             name='dueDate' 
             value={todo['dueDate']}
             onChange={setChange}
           />
           <label> ¿Completado?: </label>
-          <input type='checkbox'
-            name='completed'
-            value={todo['completed']}
-            onChange={setChange}
-          />
+          <Toggle>
+            <span></span>
+            <Input type='checkbox'
+              name='completed'
+              value={todo['completed']}
+              onChange={setChange}
+            />
+          </Toggle>
           <ButtonContainer>
 
             <Button onClick={AddTodo}>
@@ -94,6 +98,18 @@ const AddTodoForm = props => {
 
 export default AddTodoForm;
 
+const modal = keyframes`
+  from {
+    top: -10px;
+    opacity: 0;
+  };
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+`;
+
 const CloseContainer = styled.div`
   background: rgba(12, 15, 25, 0.7);
   position: fixed;
@@ -102,6 +118,7 @@ const CloseContainer = styled.div`
   justify-content: center;
   align-items: center;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 `;
@@ -109,21 +126,18 @@ const CloseContainer = styled.div`
 const Heading = styled.h1`
   align-self: center; 
 
-  &::after{
-    content: 'x';
-    position: relative;
-    left: 90%;
-    cursor: pointer; 
-  }
 `;
 
 const NewTodoContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   background: rgba(215, 230, 241, 0.8);
   height: 50%;
   width: 50%;
   border-radius: .5em;
+  box-shadow: 0 5px 10px 5px rgba(15, 15, 15, 0.4), 0 7px 20px 5px rgba(15, 15, 15, 0.8);
+  animation: ${modal} 0.5s;
 `;
 
 const Form = styled.form`
@@ -138,13 +152,6 @@ const Form = styled.form`
   padding-left: 10vw;
   font-size: 2.5vh;
 
-  input {
-    border-radius: 10%;
-    border-style: none;
-  }
-  input:focus{
-    outline: solid rgba(12, 15, 25, 0.7) 1px;
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -155,23 +162,13 @@ const ButtonContainer = styled.div`
   grid-column: 3 / 3;
 `;
 
-const Button = styled.div`
+const Toggle = styled.label`
   position: relative;
-  top: 5vh;
-  text-align: center;
-  background: rgb(215, 100, 100);
-  border-radius: 10px;
-  padding: 10px 15px;
-  margin-right: 25px;
-  box-shadow: 0px 2px 4px 1px rgba(15, 15, 15, 0.8);
-
-  &:active {
-    box-shadow: inset 0 2px 4px 1px rgba(15, 15, 15, 0.8);
-    color: rgb(215, 214, 215, 0.8); 
-    text-shadow: 1px 1px rgba(15, 15, 15, 0.8);
-  }:hover {
-    transition: 0.2s;
-    cursor: pointer;
-    color: rgb(215, 214, 215, 0.8); 
-  }
+  display: inline-block;
+  cursor: pointer;
+  height: 90%;
+  width: 30%;
+  background: rgba(145, 12, 14, .1);
+  border-radius: 2em;
+  
 `;

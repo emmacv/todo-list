@@ -1,15 +1,42 @@
 import ProfileImg from 'Resources/Profile/toa-heftiba-O3ymvT7Wf9U-unsplash.jpg';//!imported as string
-import styled from 'styled-components';
-import React, { useContext, useState } from 'react';
+import { default as Button } from 'Components/Atoms/PrimaryButton/index';
+import { default as Input } from 'Components/Atoms/Input/AddTodoTypeInput';
 import { TodosContext } from 'Components/Providers/TodosProviders';
+import React, { useContext, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import uuid from 'react-uuid';
 
 const TodosCategories = ({children, props}) => {
   const {todosTypes, setTodosTypes} = useContext(TodosContext);
+  const [inputCategory, setInputCategory] = useState(false);
+  const [content, setContent] = useState('');
 
-  const updateTodosTypes = e => {
-    //setTodosTypes();
-    setTimeout(() => alert('Hello'));
+  const valueHandler = event => {
+    setContent(event.target.value);
+  }
+
+  const updateTodoType = () => {
+    if(inputCategory) //here you're querying the last value of this state, not the current one.
+      if(content) {
+        setTodosTypes([...todosTypes, content]);
+        setContent('');
+      }
+      else {
+        setInputCategory(true);
+        alert('You must fulfithill the field!');
+      }
+  }
+
+  const addTodoType = () => {
+    setInputCategory(!inputCategory); //the state is set true or false once it's rendering, that's why you get the previous result and not right away the state updated
+
+    updateTodoType();
   };
+
+  const keyHandler = ({keyCode}) => {
+    if(keyCode === 13)
+      updateTodoType();
+  } 
 
   return (
     <Container>
@@ -21,14 +48,22 @@ const TodosCategories = ({children, props}) => {
         </ProfileLabel> 
       </ProfileData>
       <TodosListCategories>
-        {todosTypes.map(cathegory => <Cathegory as='h4'>{cathegory}</Cathegory>)}
 
-        <Button onClick={(updateTodosTypes)}> 
-          Add cathegory 
+        {todosTypes.map(category => <Cathegory as='h4' key={uuid()}>{category}</Cathegory>)}
+        {inputCategory && <NewTodoContainer>
+        <Input 
+          type='text' 
+          placeholder='Enter new Todo category'
+          onChange={valueHandler}
+          value={content}
+          onKeyDown={keyHandler}
+        />
+        <CancelButton onClick={() => {setInputCategory(false); setContent('');}}>x</CancelButton>
+        </NewTodoContainer>} 
+        <Button onClick={addTodoType}> 
+          {`${!inputCategory ? 'Add' : 'Save '} category`} 
         </Button>
       </TodosListCategories>
-
-      <AddCathegoryButton />
     </Container>
   );
 }
@@ -42,6 +77,22 @@ const Container = styled.div`
   grid-area: todos-cat;
   font-size: 3vh;
 `;
+
+const NewTodoContainer = styled.div`
+  display: flex;
+  position: relative;
+`
+
+const CancelButton = styled.div`
+  cursor: pointer;
+  position: relative;
+  text-align: justify;
+  left: 10px;
+  &:hover{
+    color: rgba(250, 15, 15, 0.8);
+  }
+`;
+
 
 const ProfileData = styled.div`
   position: relative;
@@ -91,27 +142,3 @@ const Cathegory = styled.li`
   }
 `;
 
-const AddCathegoryButton = styled.div`
-
-`;
-
-const Button = styled.div`
-  position: relative;
-  top: 5vh;
-  text-align: center;
-  background: rgb(215, 100, 100);
-  border-radius: 10px;
-  padding: 10px 15px;
-  margin-right: 25px;
-  box-shadow: 0px 2px 4px 1px rgba(15, 15, 15, 0.8);
-
-  &:active {
-    box-shadow: inset 0 2px 4px 1px rgba(15, 15, 15, 0.8);
-    color: rgb(215, 214, 215, 0.8); 
-    text-shadow: 1px 1px rgba(15, 15, 15, 0.8);
-  }:hover {
-    transition: 0.2s;
-    cursor: pointer;
-    color: rgb(215, 214, 215, 0.8); 
-  }
-`;
