@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import AddTodoForm from 'Components/Molecules/AddTodoForm/index';
 import { default as Button } from 'Components/Atoms/PrimaryButton/index';
 import { default as Input } from 'Components/Atoms/Input/AddTodoTypeInput';
-import  uuid from 'react-uuid';
+import uuid from 'react-uuid';
 import background from 'Resources/Backgrounds/xps-bXfQLglc81U-unsplash.jpg'
 
 const TodoContainter = ({children, props}) => {
   const {todosList, addTodo, closeTodoForm} = useContext(TodosContext);
-  const button = <Button onClick={ () => addTodo( <AddTodoForm {...{closeTodoForm}}/> ) } aligned > Add new Todo </Button>;
+  const button = <Button onClick={ () => addTodo( <AddTodoForm {...{closeTodoForm}}/> )} aligned > Add new Todo </Button>;
 
   return (
     <Container>
