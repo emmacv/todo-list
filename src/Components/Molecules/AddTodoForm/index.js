@@ -1,7 +1,7 @@
 import { TodosContext } from 'Components/Providers/TodosProviders';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
-import {default as Button} from 'Components/Atoms/PrimaryButton/index';
+import { default as Button } from 'Components/Atoms/PrimaryButton/index';
 import { default as Input } from 'Components/Atoms/Input/AddTodoTypeInput';
 
 const AddTodoForm = props => {
@@ -13,6 +13,7 @@ const AddTodoForm = props => {
     dueDate: '',
     completed: false,
   }));
+  
 
   const stopProp = e =>{
     e.stopPropagation();
@@ -34,14 +35,16 @@ const AddTodoForm = props => {
 
   const AddTodo = e => {
     for(let item in todo)
-      if(!todo[item])
+      if(!todo[item] && typeof todo[item] !== 'boolean')
       {
-        alert('Debe llenar todos los campos');
-        
+        alert('You must fill all fields');
+
         return;
       }
 
-    setTodosList(...todosList, todo);
+    setTodosList([...todosList, todo]);
+    alert('New todo added');
+
     closeTodoForm();
   };
 
@@ -50,36 +53,36 @@ const AddTodoForm = props => {
       <NewTodoContainer onClick={stopProp}>
         <Heading> Add New Todo </Heading>
         <Form onSubmit={closeTodoForm} rows={Object.keys(todo).length}>
-          <label> Nombre: </label>
+          <label> Name: </label>
           <Input name='name' 
             value={todo['name']} 
             onChange={setChange}
           />
-          <label> Categoría: </label>
+          <label> Category: </label>
           <Input name='cathegory' 
             value={todo['cathegory']}
             onChange={setChange}
           />
-          <label> Fecha de inicio: </label>
+          <label> Start date: </label>
           <Input input type='date'
             name='startDate' 
             value={todo['startDate']}
             onChange={setChange}  
           />
-          <label> Fecha de fin: </label>
+          <label> Deadline: </label>
           <Input type='date'
             name='dueDate' 
             value={todo['dueDate']}
             onChange={setChange}
           />
-          <label> ¿Completado?: </label>
-          <Toggle>
-            <span></span>
+          <label> Completed?: </label>
+          <Toggle id='toggle'>
             <Input type='checkbox'
               name='completed'
               value={todo['completed']}
               onChange={setChange}
             />
+            <Container />
           </Toggle>
           <ButtonContainer>
 
@@ -126,6 +129,9 @@ const CloseContainer = styled.div`
 const Heading = styled.h1`
   align-self: center; 
 
+  ::before, ::after {
+    content: '|'
+  }
 `;
 
 const NewTodoContainer = styled.div`
@@ -152,6 +158,7 @@ const Form = styled.form`
   padding-left: 10vw;
   font-size: 2.5vh;
 
+
 `;
 
 const ButtonContainer = styled.div`
@@ -162,13 +169,46 @@ const ButtonContainer = styled.div`
   grid-column: 3 / 3;
 `;
 
+const Container = styled.div`
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0; 
+  height: 100%;
+  width: 100%;
+  background: rgba(145, 12, 14, .2);  
+  border-radius: 2em;
+  padding-left: 8%;
+  transition: 0.4s; /**You need to specify the animation property in every component you need it. Is not inherined.*/
+  align-items: center;
+
+  ::before {
+    transition: 0.4s;
+    position: relative; /**!if you remove the display property set flex, you'll need to specify the position property.*/
+    content: '';
+    width: 1.7vw;
+    height: 1.7vw;
+    background: white;
+    border-radius: 50%;
+  }
+`;
+
 const Toggle = styled.label`
+  height: 90%;
+  width: 30%;
   position: relative;
   display: inline-block;
   cursor: pointer;
-  height: 90%;
-  width: 30%;
-  background: rgba(145, 12, 14, .1);
-  border-radius: 2em;
-  
+
+  & > input {
+    opacity: 0;
+  }
+
+  input:checked + ${Container}::before {
+    transform: translateX(75%);
+  }
+
+  input:checked + ${Container} {
+    background: rgba(15, 15, 15, 0.8);
+  }
 `;
