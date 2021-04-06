@@ -1,13 +1,21 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 
 export const TodosContext = createContext({});
 
-const TodosProviders = ({children}) => {
-  const [todosList, setTodosList] = useState([]);
-  const [todosTypes, setTodosTypes] = useState(['cathegory1', 'cathegory2', 'cathegory3']);
+const TodosProviders = ({ children }) => {
+  const [todosList, setTodosList] = useState(() => JSON.parse(localStorage.getItem('todo-list')) || []);
+  const [todosTypes, setTodosTypes] = useState(() => JSON.parse(localStorage.getItem('todo-categories')) || []);
   const [todoForm, setTodoForm] = useState(null);
+  
+  useEffect(() => {
+    localStorage.setItem('todo-list', JSON.stringify(todosList));
+  }, [todosList]);
+
+  useEffect(() => {
+    localStorage.setItem('todo-categories', JSON.stringify(todosTypes))
+  }, [todosTypes])
 
   return (
     <TodosContext.Provider value={{
