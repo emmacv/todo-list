@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const TodosContext = createContext({});
 
 const TodosProviders = ({ children }) => {
-  const [todosList, setTodosList] = useState(() => JSON.parse(localStorage.getItem('todo-list')) || []);
+  const [todosList, setTodosList] = useState(JSON.parse(localStorage.getItem('todo-list')) || []);
   const [todosTypes, setTodosTypes] = useState(() => JSON.parse(localStorage.getItem('todo-categories')) || []);
   const [todoForm, setTodoForm] = useState(null);
   
@@ -19,17 +19,17 @@ const TodosProviders = ({ children }) => {
 
   return (
     <TodosContext.Provider value={{
-        todosList,
-        setTodosList, 
-        todosTypes, 
-        setTodosTypes, 
-        addTodo(todoForm) {
-          setTodoForm(todoForm);
-        },
-        closeTodoForm() {
-          setTodoForm(null);
-        }
-      }}
+      todosList,
+      setTodosList, 
+      todosTypes, 
+      setTodosTypes, 
+      addTodo(todoForm) {
+        setTodoForm(todoForm);
+      },
+      closeTodoForm() {
+        setTodoForm(null);
+      }
+    }}
     >
       {children}
       {todoForm && <FullScreen onClick={() => setTodoForm(null)}>

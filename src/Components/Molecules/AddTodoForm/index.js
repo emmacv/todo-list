@@ -33,10 +33,13 @@ const AddTodoForm = props => {
     setTodo({...todo, [e.target.name]: e.target.value})
   }
 
+  const changeCheck = e => {
+    setTodo({...todo, completed: !todo.completed})
+  };
+
   const AddTodo = e => {
     for(let item in todo)
-      if(!todo[item] && typeof todo[item] !== 'boolean')
-      {
+      if(!todo[item] && typeof todo[item] !== 'boolean') {
         alert('You must fill all fields');
 
         return;
@@ -79,8 +82,8 @@ const AddTodoForm = props => {
           <Toggle id='toggle'>
             <Input type='checkbox'
               name='completed'
-              value={todo['completed']}
-              onChange={setChange}
+              checked={todo.completed}
+              onChange={changeCheck}
             />
             <Container />
           </Toggle>
@@ -90,7 +93,7 @@ const AddTodoForm = props => {
               Add todo
             </Button>
             <Button onClick={resetForm}>
-              Reset
+              Reset 
             </Button>
           </ButtonContainer>
         </Form>
@@ -157,8 +160,6 @@ const Form = styled.form`
   padding-top: 10%;
   padding-left: 10vw;
   font-size: 2.5vh;
-
-
 `;
 
 const ButtonContainer = styled.div`
