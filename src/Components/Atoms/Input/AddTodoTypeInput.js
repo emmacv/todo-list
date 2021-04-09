@@ -8,7 +8,7 @@ const AdddTodoTypecontent = (props) => {
 export default AdddTodoTypecontent;
 
 const Input = styled.input`
-  width: 80%;
+  width: ${({ fluid }) => fluid || 80}%;
   border-style: none;
   border-bottom: 1px solid rgba(15, 15, 15, 0.8);
   background: transparent;
