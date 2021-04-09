@@ -31,10 +31,14 @@ const TodoContainter = ({children, props}) => {
         </EmptyList>) : (
         <MainTodoDiv>
           <Toolbar>
+<<<<<<< Updated upstream
             <label 
               htmlFor='todo-filter'
               onChange={filterTodo}
               > filter todos: </label>
+=======
+            <label htmlFor='todo-filter'> filter todos: </label>
+>>>>>>> Stashed changes
             <Input fluid='35' id='todo-filter'/>
             {button}
             <label> Progress: </label>
