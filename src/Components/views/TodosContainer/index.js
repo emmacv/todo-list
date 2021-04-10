@@ -1,5 +1,5 @@
 import { TodosContext } from 'Components/Providers/TodosProviders';
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import AddTodoForm from 'Components/Molecules/AddTodoForm/index';
 import { default as Button } from 'Components/Atoms/PrimaryButton/index';
@@ -10,10 +10,13 @@ import _ from 'lodash';
 
 const TodoContainter = ({children, props}) => {
   const {todosList, addTodo, closeTodoForm} = useContext(TodosContext);
+  const [input, setInput] = useState('');
+  const [todosFilter, setTodosFilter] = useState(todosList);
   const button = <Button onClick={ () => addTodo( <AddTodoForm {...{closeTodoForm}}/> )} aligned > Add new Todo </Button>;
 
-  const filterTodo = event => {
-    
+  const filterTodos = ({ target: { value } }) => {
+    setInput(value);
+    setTodosFilter(value.length >= 0 ? ( _.filter(todosList, ({ name }) => name.toLowerCase().includes(value.toLowerCase())) ) : todosList);
   }
 
   return (
@@ -31,23 +34,24 @@ const TodoContainter = ({children, props}) => {
         </EmptyList>) : (
         <MainTodoDiv>
           <Toolbar>
-<<<<<<< Updated upstream
-            <label 
-              htmlFor='todo-filter'
-              onChange={filterTodo}
-              > filter todos: </label>
-=======
             <label htmlFor='todo-filter'> filter todos: </label>
->>>>>>> Stashed changes
-            <Input fluid='35' id='todo-filter'/>
+            <Input 
+              fluid='35' 
+              id='todo-filter'
+              value={input}
+              onChange={filterTodos}
+            />
             {button}
             <label> Progress: </label>
             <TodoProgressBar completedTodos={Math.floor(_.filter(todosList, todo => todo.completed).length / todosList.length * 100)}/>
           </Toolbar>
           <AddContent>
-            {todosList.map(todo => <> 
-              <li key={uuid()}> {todo.name} </li>
-            </>)}
+            { 
+              todosFilter.length !== 0 ? todosFilter.map(todo => <> 
+                <li key={uuid()}> {todo.name} </li>
+                </>) : 
+              <NoMatchesDiv> <i class="fas fa-sad-tear"></i> Sorry, no matches found </NoMatchesDiv>
+            }
           </AddContent>
         </MainTodoDiv>
         )
@@ -92,7 +96,7 @@ const MainTodoDiv = styled(EmptyList)`
   ul {
     margin-left: 50px;
     padding: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     
     li:hover {
@@ -143,4 +147,10 @@ const TodoProgressBar = styled.div`
     border-radius: ${({ completedTodos }) => completedTodos === 100 ? '5px' : '5px 0 0 5px'}
 
   }
+`;
+
+const NoMatchesDiv = styled.aside`
+  display: relative;
+  display: flex;
+  flex-flow: row nowrap;
 `;

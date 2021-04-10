@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const TodosContext = createContext({});
 
 const TodosProviders = ({ children }) => {
-  const [todosList, setTodosList] = useState(JSON.parse(localStorage.getItem('todo-list')) || []);
+  const [todosList, setTodosList] = useState(() => JSON.parse(localStorage.getItem('todo-list')) || []);
   const [todosTypes, setTodosTypes] = useState(() => JSON.parse(localStorage.getItem('todo-categories')) || []);
   const [todoForm, setTodoForm] = useState(null);
   
